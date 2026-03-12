@@ -10,6 +10,7 @@ version = "0.1.0"
 [dependencies]
 python = ">=3.14.3,<3.15"
 ipython = ">=9.11.0,<10"
+seaborn = ">=0.13.2,<0.14"
 
 [pypi-dependencies]
 pangolin = { git = "https://github.com/justindomke/pangolin.git" }
