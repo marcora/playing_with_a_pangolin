@@ -1,6 +1,9 @@
 import numpy as np
+import pandas as pd
 import pangolin as pg
 from pangolin import interface as pi
+
+M = 10000
 
 # -----------------------------
 # 1. Create toy dataset
@@ -36,7 +39,7 @@ y = pi.normal(mu, sigma)
 # 3. Run inference
 # -----------------------------
 
-draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=10000)
+draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=M)
 
 # draws is a tuple/list aligned with the parameters
 alpha_draws, beta_draws, sigma_draws = draws
@@ -49,8 +52,6 @@ print("sigma:", np.mean(sigma_draws))
 # -----------------------------
 # 3b. Read, prep, and analyze Howell1 (real data)
 # -----------------------------
-import numpy as np
-import pandas as pd
 
 # read Howell1 data
 url = "https://raw.githubusercontent.com/rmcelreath/rethinking/master/data/Howell1.csv"
@@ -74,7 +75,7 @@ mu = alpha + beta * height_c
 y = pi.normal(mu, sigma)
 
 # run inference using the already-defined priors/model pieces
-draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=2000)
+draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=M)
 
 alpha_draws, beta_draws, sigma_draws = draws
 
