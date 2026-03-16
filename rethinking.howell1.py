@@ -1,3 +1,7 @@
+from uuid import NAMESPACE_DNS
+
+import arviz as az
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pangolin as pg
@@ -78,8 +82,17 @@ y = pi.normal(mu, sigma)
 draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=M)
 
 alpha_draws, beta_draws, sigma_draws = draws
-
 print("Posterior means:")
 print("alpha:", np.mean(alpha_draws))
 print("beta :", np.mean(beta_draws))
 print("sigma:", np.mean(sigma_draws))
+
+names = ["alpha", "beta", "sigma"]
+idata = {
+    name: np.array(samples).reshape(2, -1)
+    for name, samples in dict(zip(names, draws)).items()
+}
+
+print(az.plot_trace(idata))
+az.summary(idata)
+plt.show()
