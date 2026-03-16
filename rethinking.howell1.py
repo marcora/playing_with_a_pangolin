@@ -89,10 +89,10 @@ print("sigma:", np.mean(sigma_draws))
 
 names = ["alpha", "beta", "sigma"]
 idata = {
-    name: np.array(samples).reshape(2, -1)
+    name: np.array(samples).reshape(4, -1)
     for name, samples in dict(zip(names, draws)).items()
 }
 
-print(az.plot_trace(idata))
-az.summary(idata)
+print(az.summary(idata))
+az.plot_trace(idata)
 plt.show()
