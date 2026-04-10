@@ -12,7 +12,10 @@ python = ">=3.14.3,<3.15"
 ipython = ">=9.11.0,<10"
 seaborn = ">=0.13.2,<0.14"
 jupyter = ">=1.1.1,<2"
-arviz = ">=0.23.4,<0.24"
+arviz = ">=1.0.0,<2"
+marimo = ">=0.23.0,<0.24"
+openai = ">=2.31.0,<3"
+python-lsp-server = ">=1.14.0,<2"
 
 [pypi-dependencies]
 pangolin = { git = "https://github.com/justindomke/pangolin.git" }
