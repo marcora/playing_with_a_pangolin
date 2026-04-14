@@ -20,10 +20,10 @@ def _():
 def _():
     import numpy as np
     import seaborn as sns
-    import pangolin
+    import pangolin as pg
     from pangolin import interface as pi
 
-    return np, pangolin, pi, sns
+    return np, pg, pi, sns
 
 
 @app.cell
@@ -39,12 +39,12 @@ def _(np):
 
 
 @app.cell
-def _(N, pangolin, pi, x_obs):
+def _(N, pg, pi, x_obs):
     # model spec
-    z = pi.beta(2,2)
+    z = pi.beta(2, 2)
     x = [pi.bernoulli(z) for i in range(N)]
     # do inference
-    z_post = pangolin.blackjax.sample(z, x, x_obs.tolist()) # p(z | x = x_obs)
+    z_post = pg.blackjax.sample(z, x, x_obs.tolist()) # p(z | x = x_obs)
     return (z_post,)
 
 
