@@ -5,7 +5,7 @@
 
 import marimo
 
-__generated_with = "0.23.0"
+__generated_with = "0.23.1"
 app = marimo.App(width="medium")
 
 
@@ -18,25 +18,43 @@ def _():
 
 @app.cell
 def _():
-    # synthetic data
     import numpy as np
+    import seaborn as sns
+    import pangolin
+    from pangolin import interface as pi
+
+    return np, pangolin, pi, sns
+
+
+@app.cell
+def _(np):
+    # synthetic data
     np.random.seed(67)
     z_true = 0.7
     N = 20
     x_obs = np.random.binomial(1, z_true, N)
+    z_obs = np.mean(x_obs)
+    z_obs
+    return N, x_obs
 
-    # create model
-    import pangolin
-    from pangolin import interface as pi
+
+@app.cell
+def _(N, pangolin, pi, x_obs):
+    # model spec
     z = pi.beta(2,2)
-    x = pi.vfor(pi.bernoulli, None, N)(z)
-
+    x = [pi.bernoulli(z) for i in range(N)]
     # do inference
-    z_samps = pangolin.blackjax.sample(z, x, x_obs) # p(z | x = x_obs)
+    z_post = pangolin.blackjax.sample(z, x, x_obs.tolist()) # p(z | x = x_obs)
+    return (z_post,)
 
+
+@app.cell
+def _(sns, z_post):
     # plot
-    import seaborn as sns
-    sns.histplot(z_samps, binrange=[0,1])
+    ax = sns.kdeplot(z_post)
+    ax.set_xlabel('θ')
+    ax.set_xlim(0, 1)
+    ax
     return
 
 
