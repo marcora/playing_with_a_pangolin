@@ -16,6 +16,8 @@ arviz = ">=1.0.0,<2"
 marimo = ">=0.23.1,<0.24"
 openai = ">=2.32.0,<3"
 python-lsp-server = ">=1.14.0,<2"
+jax = ">=0.9.2,<0.10"
+jaxlib = ">=0.9.2,<0.10"
 
 [pypi-dependencies]
 pangolin = { git = "https://github.com/justindomke/pangolin.git" }

@@ -39,10 +39,15 @@ def _(np):
 
 
 @app.cell
-def _(N, pg, pi, x_obs):
+def _(N, pi):
     # model spec
     z = pi.beta(2, 2)
-    x = [pi.bernoulli(z) for i in range(N)]
+    x = pi.vmap(pi.bernoulli, None, N)(z)
+    return x, z
+
+
+@app.cell
+def _(pg, x, x_obs, z):
     # do inference
     z_post = pg.blackjax.sample(z, x, x_obs.tolist()) # p(z | x = x_obs)
     return (z_post,)
