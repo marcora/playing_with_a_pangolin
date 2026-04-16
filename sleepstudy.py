@@ -49,7 +49,7 @@ def _(N, pi):
 @app.cell
 def _(pg, x, x_obs, z):
     # do inference
-    z_post = pg.blackjax.sample(z, x, x_obs.tolist()) # p(z | x = x_obs)
+    z_post = pg.blackjax.sample(z, x, x_obs) # p(z | x = x_obs)
     return (z_post,)
 
 
