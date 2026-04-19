@@ -78,12 +78,7 @@ draws = pg.blackjax.sample([alpha, beta, sigma], y, weight)
 
 alpha_draws, beta_draws, sigma_draws = draws
 
-dt = az.from_dict(
-    {
-        "posterior": {
-            "alpha": alpha_draws.tolist(),
-            "beta": beta_draws.tolist(),
-            "sigma": sigma_draws.tolist(),
-        }
-    }
-)
+print("Posterior means:")
+print("alpha:", np.mean(alpha_draws))
+print("beta :", np.mean(beta_draws))
+print("sigma:", np.mean(sigma_draws))
