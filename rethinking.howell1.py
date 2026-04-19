@@ -1,11 +1,8 @@
 import arviz as az
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pangolin as pg
 from pangolin import interface as pi
-
-M = 10000
 
 # -----------------------------
 # 1. Create toy dataset
@@ -41,7 +38,7 @@ y = pi.normal(mu, sigma)
 # 3. Run inference
 # -----------------------------
 
-draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=M)
+draws = pg.blackjax.sample([alpha, beta, sigma], y, weight)
 
 # draws is a tuple/list aligned with the parameters
 alpha_draws, beta_draws, sigma_draws = draws
@@ -77,20 +74,16 @@ mu = alpha + beta * height_c
 y = pi.normal(mu, sigma)
 
 # run inference using the already-defined priors/model pieces
-draws = pg.blackjax.sample([alpha, beta, sigma], y, weight, niter=M)
+draws = pg.blackjax.sample([alpha, beta, sigma], y, weight)
 
 alpha_draws, beta_draws, sigma_draws = draws
-print("Posterior means:")
-print("alpha:", np.mean(alpha_draws))
-print("beta :", np.mean(beta_draws))
-print("sigma:", np.mean(sigma_draws))
 
-names = ["alpha", "beta", "sigma"]
-idata = {
-    name: np.array(samples).reshape(4, -1)
-    for name, samples in dict(zip(names, draws)).items()
-}
-
-print(az.summary(idata))
-az.plot_trace(idata)
-plt.show()
+dt = az.from_dict(
+    {
+        "posterior": {
+            "alpha": alpha_draws.tolist(),
+            "beta": beta_draws.tolist(),
+            "sigma": sigma_draws.tolist(),
+        }
+    }
+)

@@ -28,7 +28,7 @@ def _():
 
 @app.cell
 def _(np):
-    # synthetic data
+    # sim obs
     np.random.seed(67)
     z_true = 0.7
     N = 20
@@ -40,26 +40,43 @@ def _(np):
 
 @app.cell
 def _(N, pi):
-    # model spec
+    # spec model
     z = pi.beta(2, 2)
     x = pi.vmap(pi.bernoulli, None, N)(z)
     return x, z
 
 
 @app.cell
+def _(pg, z):
+    # sample prior
+    z_prior = pg.blackjax.sample(z) # p(z)
+    return (z_prior,)
+
+
+@app.cell
+def _(sns, z_prior):
+    # plot prior
+    ax_prior = sns.kdeplot(z_prior)
+    ax_prior.set_xlabel('θ')
+    ax_prior.set_xlim(0, 1)
+    ax_prior
+    return
+
+
+@app.cell
 def _(pg, x, x_obs, z):
-    # do inference
+    # sample posterior
     z_post = pg.blackjax.sample(z, x, x_obs) # p(z | x = x_obs)
     return (z_post,)
 
 
 @app.cell
 def _(sns, z_post):
-    # plot
-    ax = sns.kdeplot(z_post)
-    ax.set_xlabel('θ')
-    ax.set_xlim(0, 1)
-    ax
+    # plot posterior
+    ax_post = sns.kdeplot(z_post)
+    ax_post.set_xlabel('θ')
+    ax_post.set_xlim(0, 1)
+    ax_post
     return
 
 
