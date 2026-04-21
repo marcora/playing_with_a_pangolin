@@ -44,14 +44,14 @@ def _(pi):
     α_true = pi.constant(10)
     β_true = pi.constant(2)
     σ_true = pi.constant(5)
-    x_true = pi.constant(range(0, 101))
-    y_true = α_true + β_true * x_true + pi.normal(0, σ_true)
+    x_true = [pi.constant(i) for i in range(101)]
+    y_true = [α_true + β_true * x_true[i] + pi.normal(0, σ_true) for i in range(101)]
     return (y_true,)
 
 
 @app.cell
 def _(pg, y_true):
-    y_obs = pg.blackjax.sample(y_true, niter = 1).flatten().tolist()
+    y_sim = pg.blackjax.sample(y_true, niter = 1)
     return
 
 
@@ -60,8 +60,8 @@ def _(pi):
     α = pi.normal(0, 100)
     β = pi.normal(0, 10)
     σ = pi.exponential(10)
-    x = pi.constant(range(0, 101))
-    y = α + β * x + pi.normal(0, σ)
+    x = [pi.constant(i) for i in range(101)]
+    y = [α + β * x[i] + pi.normal(0, σ) for i in range(101)]
     return α, β, σ
 
 
