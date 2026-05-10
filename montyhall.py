@@ -1,3 +1,5 @@
+## python simulation
+
 import random
 
 doors = {1, 2, 3}
@@ -17,3 +19,13 @@ for _ in range(M):
         win_switch += 1
 
 print(f"Keep: {win_keep}, Switch: {win_switch}")
+
+## pangolin implementation
+
+import pangolin as pg
+from pangolin import blackjax as bx
+from pangolin import interface as pi
+
+car = pi.categorical([1 / 3, 1 / 3, 1 / 3])
+pick = pi.categorical([1 / 3, 1 / 3, 1 / 3])
+monty = pi.categorical([1 / 3, 1 / 3, 1 / 3])
